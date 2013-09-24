@@ -1,4 +1,4 @@
-package edu.cmu.deiis.types;
+package edu.cmu.deiis.annotator;
 
 import java.util.Arrays;
 
@@ -8,6 +8,8 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.text.AnnotationIndex;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
+
+import edu.cmu.deiis.types.*;
 
 public class NGramAnnotator extends JCasAnnotator_ImplBase {
 
@@ -140,3 +142,4 @@ public class NGramAnnotator extends JCasAnnotator_ImplBase {
   }
 
 }
+

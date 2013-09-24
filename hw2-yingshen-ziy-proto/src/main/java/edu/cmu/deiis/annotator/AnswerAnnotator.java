@@ -1,4 +1,4 @@
-package edu.cmu.deiis.types;
+package edu.cmu.deiis.annotator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.jcas.JCas;
+
+import edu.cmu.deiis.types.Answer;
 
 public class AnswerAnnotator extends JCasAnnotator_ImplBase {
 
