@@ -10,6 +10,14 @@ import org.apache.uima.jcas.JCas;
 
 import edu.cmu.deiis.types.*;
 
+/**  
+* TokenAnnotator.java - identify tokens in the range annotated as Question type or Answer type.
+* example: input - "Booth shot Lincoln?"(annotated as question) 
+* annotation:  "Booth" "shot" "Lincoln"
+* the Token(type) annotation will be added to the JCas of the file
+* @author  Ying Sheng
+* @version 1.0 
+*/ 
 
 public class TokenAnnotator extends JCasAnnotator_ImplBase {
   
@@ -17,6 +25,11 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
          Pattern.compile("\\b\\w+\\b");
   
   @Override
+  /**  
+   * Take JCas as input, add new annotations to JCas
+   * The JCas object is the data object inside UIMA where all the information is stored. 
+   * It contains all annotations created by previous annotators, and the document text to be analyzed.   
+   */
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
     
     //get document text from JCas

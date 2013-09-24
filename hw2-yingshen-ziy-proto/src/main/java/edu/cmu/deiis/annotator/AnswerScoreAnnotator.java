@@ -13,8 +13,20 @@ import org.apache.uima.jcas.JCas;
 
 import edu.cmu.deiis.types.*;
 
-public class AnswerScoreAnnotator extends JCasAnnotator_ImplBase {
+/**  
+* AnswerScoreAnnotator.java - calculate scores for each answer by (NGram overlapped with question)/(total NGram number)
+* order the answer by score in descend order, calculate precision = (correct answer in first N answer)/(total correct answer number N) 
+* the AnswerScore(type) annotation will be added to the JCas of the file
+* @author  Ying Sheng
+* @version 1.0 
+*/ 
 
+public class AnswerScoreAnnotator extends JCasAnnotator_ImplBase {
+  /**  
+   * Take JCas as input, add new annotations to JCas
+   * The JCas object is the data object inside UIMA where all the information is stored. 
+   * It contains all annotations created by previous annotators, and the document text to be analyzed.   
+   */
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
     
@@ -81,12 +93,14 @@ public class AnswerScoreAnnotator extends JCasAnnotator_ImplBase {
       if (AnsIdx>0) {
         NGramString=docText.substring(beginpos,endpos);
         totalNum[AnsIdx-1]++;
+        //totalNum[AnsIdx-1]+=NGAnnotation.getElements().size();
         //check if the NGram is found in question
         found=false;
         for (String s : QueNGramStr) {
           if (s.equals(NGramString)) {found=true;break;}
         }
         if (found) {overlapNum[AnsIdx-1]++;}      
+        //if (found) {overlapNum[AnsIdx-1]+=NGAnnotation.getElements().size();}
       }
     }
     

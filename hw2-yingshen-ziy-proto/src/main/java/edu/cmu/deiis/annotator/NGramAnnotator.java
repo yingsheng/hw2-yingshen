@@ -11,8 +11,22 @@ import org.apache.uima.jcas.cas.FSArray;
 
 import edu.cmu.deiis.types.*;
 
-public class NGramAnnotator extends JCasAnnotator_ImplBase {
+/**  
+* NGramAnnotator.java - identify 1- 2- 3-Gram based on token annotation in each ranges annotated by question or answer
+* example: input - "Booth shot Lincoln?"(annotated as question) 
+* annotation:  "Booth" "shot" "Lincoln" "Booth shot" "shot Lincoln" "Booth shot Lincoln"
+* the elements in NGram is an FSArray consisting of Token annotations.  
+* the NGram(type) annotation will be added to the JCas of the file
+* @author  Ying Sheng
+* @version 1.0 
+*/ 
 
+public class NGramAnnotator extends JCasAnnotator_ImplBase {
+  /**  
+   * Take JCas as input, add new annotations to JCas
+   * The JCas object is the data object inside UIMA where all the information is stored. 
+   * It contains all annotations created by previous annotators, and the document text to be analyzed.   
+   */
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
     // TODO Auto-generated method stub

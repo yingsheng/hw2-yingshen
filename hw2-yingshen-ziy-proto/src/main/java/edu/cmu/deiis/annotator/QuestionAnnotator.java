@@ -9,6 +9,13 @@ import org.apache.uima.jcas.JCas;
 
 import edu.cmu.deiis.types.Question;
 
+/**  
+* QuestionAnnotator.java - identify question sentence after the "Q " and end with "?", 
+* example: input - "Q Booth shot Lincoln?" annotated region: "Booth shot Lincoln?"
+* the Question(type) annotation will be added to the JCas of the file
+* @author  Ying Sheng
+* @version 1.0 
+*/ 
 
 public class QuestionAnnotator extends JCasAnnotator_ImplBase {
   //create regular expression pattern for question
@@ -16,6 +23,11 @@ public class QuestionAnnotator extends JCasAnnotator_ImplBase {
           Pattern.compile("(?<=\\b[Q]\\s)(.+)[?]");
   @Override
   
+  /**  
+   * Take JCas as input, add new annotations to JCas
+   * The JCas object is the data object inside UIMA where all the information is stored. 
+   * It contains all annotations created by previous annotators, and the document text to be analyzed.   
+   */
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
     //get document text from JCas
     String docText=aJCas.getDocumentText();
