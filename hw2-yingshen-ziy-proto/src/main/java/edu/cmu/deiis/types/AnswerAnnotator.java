@@ -14,7 +14,7 @@ public class AnswerAnnotator extends JCasAnnotator_ImplBase {
           Pattern.compile("(?<=\\b[A]\\s)(\\b[0-1])(?=\\s)");
 
   private Pattern mAnswerPattern = 
-         Pattern.compile("(?<=\\b[A]\\s\\b[0-1]\\s)(.+)(?=[.])");
+         Pattern.compile("(?<=\\b[A]\\s\\b[0-1]\\s)(.+)[.]");
 
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {

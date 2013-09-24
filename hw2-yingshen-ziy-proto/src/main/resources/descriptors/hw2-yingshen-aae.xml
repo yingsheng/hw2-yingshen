@@ -9,18 +9,30 @@
     <delegateAnalysisEngine key="QuestionAnnotatorDescriptor">
       <import name=".Users.yingsheng.git.hw2-yingshen.hw2-yingshen-ziy-proto.src.main.resources.descriptors.QuestionAnnotatorDescriptor"/>
     </delegateAnalysisEngine>
+  <delegateAnalysisEngine key="TokenAnnotatorDescriptor">
+      <import location="/Users/yingsheng/git/hw2-yingshen/hw2-yingshen-ziy-proto/src/main/resources/descriptors/TokenAnnotatorDescriptor.xml"/>
+    </delegateAnalysisEngine>
+  <delegateAnalysisEngine key="NGramAnnotatorDescriptor">
+      <import location="/Users/yingsheng/git/hw2-yingshen/hw2-yingshen-ziy-proto/src/main/resources/descriptors/NGramAnnotatorDescriptor.xml"/>
+    </delegateAnalysisEngine>
+  <delegateAnalysisEngine key="AnswerScoreAnnotatorDescriptor">
+      <import location="/Users/yingsheng/git/hw2-yingshen/hw2-yingshen-ziy-proto/src/main/resources/descriptors/AnswerScoreAnnotatorDescriptor.xml"/>
+    </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
     <name>hw2-yingshen-aae</name>
     <description/>
     <version>1.0</version>
     <vendor/>
-    <configurationParameters/>
+    <configurationParameters searchStrategy="language_fallback"/>
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
-        <node>AnswerAnnotatorDescriptor</node>
         <node>QuestionAnnotatorDescriptor</node>
+        <node>AnswerAnnotatorDescriptor</node>
+      <node>TokenAnnotatorDescriptor</node>
+      <node>NGramAnnotatorDescriptor</node>
+      <node>AnswerScoreAnnotatorDescriptor</node>
       </fixedFlow>
     </flowConstraints>
     <fsIndexCollection/>

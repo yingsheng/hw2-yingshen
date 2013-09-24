@@ -11,7 +11,7 @@ import org.apache.uima.jcas.JCas;
 public class QuestionAnnotator extends JCasAnnotator_ImplBase {
   //create regular expression pattern for question
   private Pattern questionPattern=
-          Pattern.compile("(?<=\\b[Q]\\s)(.+)(?=[?])");
+          Pattern.compile("(?<=\\b[Q]\\s)(.+)[?]");
   @Override
   
   public void process(JCas aJCas) throws AnalysisEngineProcessException {

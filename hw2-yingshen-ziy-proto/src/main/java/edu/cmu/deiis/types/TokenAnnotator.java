@@ -1,6 +1,5 @@
 package edu.cmu.deiis.types;
 
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +11,7 @@ import org.apache.uima.jcas.JCas;
 public class TokenAnnotator extends JCasAnnotator_ImplBase {
   
   private Pattern tokenPattern=
-          Pattern.compile("(?<=\\s)(.+)(?=\\s)");
+         Pattern.compile("\\b\\w+\\b");
   
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
@@ -29,24 +28,25 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
       String QueStr=docText.substring(QueBegin,QueEnd);
       
       //match token pattern
-      Matcher matcher=tokenPattern.matcher(QueStr);
+      Matcher matcherToken=tokenPattern.matcher(QueStr);
       int pos=0;
       
-      if (matcher.find(pos)) {
+      while (matcherToken.find(pos)) {
         //add token annotation for answer
         Token annotation = new Token(aJCas);
-        annotation.setBegin(matcher.start()+QueBegin-1);
-        annotation.setEnd(matcher.end()+QueBegin-1);
+        annotation.setBegin(matcherToken.start()+QueBegin);
+        annotation.setEnd(matcherToken.end()+QueBegin);
         annotation.setConfidence(1.0);
         annotation.setCasProcessorId("TokenAnnotator");
         
         //add the annotation to index
         annotation.addToIndexes();
-      }
+        pos=matcherToken.end();
+      }      
+    
     }
-
     
-    
+   
     FSIterator<org.apache.uima.jcas.tcas.Annotation> AnsIterator = aJCas.getAnnotationIndex(Answer.type).iterator();
 //    Iterator<Annotation> typeIterator=aJCas.getAnnotationIndex(Answer.type);
  
@@ -62,21 +62,19 @@ public class TokenAnnotator extends JCasAnnotator_ImplBase {
        Matcher matcher=tokenPattern.matcher(AnsStr);
        int pos=0;
        
-       if (matcher.find(pos)) {
+       while (matcher.find(pos)) {
          //add token annotation for answer
          Token annotation = new Token(aJCas);
-         annotation.setBegin(matcher.start()+AnsBegin-1);
-         annotation.setEnd(matcher.end()+AnsBegin-1);
+         annotation.setBegin(matcher.start()+AnsBegin);
+         annotation.setEnd(matcher.end()+AnsBegin);
          annotation.setConfidence(1.0);
          annotation.setCasProcessorId("TokenAnnotator");
          
          //add the annotation to index
          annotation.addToIndexes();
+         pos=matcher.end();
        }
-     }
- 
- 
-    
+    }
 
   }
 
