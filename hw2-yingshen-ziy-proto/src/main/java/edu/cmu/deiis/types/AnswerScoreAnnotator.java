@@ -1,10 +1,7 @@
 package edu.cmu.deiis.types;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -20,23 +17,20 @@ public class AnswerScoreAnnotator extends JCasAnnotator_ImplBase {
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
     
     String docText=aJCas.getDocumentText();
-    
+       
+  //get the begin/end position of question/answer annotation
     FSIterator<org.apache.uima.jcas.tcas.Annotation> QueIterator = aJCas.getAnnotationIndex(Question.type).iterator();
     FSIterator<org.apache.uima.jcas.tcas.Annotation> AnsIterator = aJCas.getAnnotationIndex(Answer.type).iterator();
-    
     int QAnum=1+aJCas.getAnnotationIndex(Answer.type).size();
     int[] QABegin=new int[QAnum];
     int[] QAEnd=new int[QAnum]; 
     
-    //get the begin/end position of question annotation
-
     while(QueIterator.hasNext()){      
       Question QueAnnotation=(Question) QueIterator.next(); 
       QABegin[0]=QueAnnotation.getBegin();
       QAEnd[0]=QueAnnotation.getEnd();
     }
     
-    //get the begin/end position for each answer annotation    
     int count=1;
     while(AnsIterator.hasNext()){
       //find the question annotation
@@ -45,11 +39,9 @@ public class AnswerScoreAnnotator extends JCasAnnotator_ImplBase {
       QAEnd[count]=AnsAnnotation.getEnd();
       count++;
     }
-    
-    
-    FSIterator<org.apache.uima.jcas.tcas.Annotation> NGIterator = aJCas.getAnnotationIndex(NGram.type).iterator();
 
-    //find the NGram in question
+    //find all the NGram string in question and stored in s arraylist
+    FSIterator<org.apache.uima.jcas.tcas.Annotation> NGIterator = aJCas.getAnnotationIndex(NGram.type).iterator();
     ArrayList<String> QueNGramStr = new ArrayList<String>();
     
     int beginpos,endpos;
@@ -65,7 +57,8 @@ public class AnswerScoreAnnotator extends JCasAnnotator_ImplBase {
       else {break;}
     }
     
-    //for each answer, find the overlap of NGram with answer
+    
+    //for each answer, find the overlap of NGram with question (figured in previous step)
     FSIterator<org.apache.uima.jcas.tcas.Annotation> NGIterator2 = aJCas.getAnnotationIndex(NGram.type).iterator();
     int[] overlapNum=new int[QAnum-1]; //the # of NGrams that overlap with question in the answer
     int[] totalNum=new int[QAnum-1]; // the total # of NGrams in the answer
@@ -80,14 +73,16 @@ public class AnswerScoreAnnotator extends JCasAnnotator_ImplBase {
         AnsIdx++;
       }
       if (AnsIdx>0) {
-        NGramString=docText.substring(beginpos,endpos);
-        totalNum[AnsIdx-1]++;
+        NGramString=docText.substring(beginpos,endpos);      
         //check if the NGram is found in question
         found=false;
         for (String s : QueNGramStr) {
           if (s.equals(NGramString)) {found=true;break;}
         }
-        if (found) {overlapNum[AnsIdx-1]++;}      
+        //addup both the overlapNum and totalNum
+        if (found) {overlapNum[AnsIdx-1]++;}   
+        //if (found) {overlapNum[AnsIdx-1]+=NGAnnotation.getElements().size();}  
+        totalNum[AnsIdx-1]++;
       }
     }
     
